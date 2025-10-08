@@ -52,5 +52,11 @@ public class CourseService {
         return courseRepository.save(course);
     }
 
+    public void deleteCourse(UUID id) {
+        CourseEntity course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado!"));
+        courseRepository.delete(course);
+    }
+
 
 }
