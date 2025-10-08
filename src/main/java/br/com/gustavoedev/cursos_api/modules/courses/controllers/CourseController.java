@@ -48,4 +48,10 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    @PatchMapping("/{id}/active")
+    public ResponseEntity<CourseEntity> activateCourse(@PathVariable UUID id) {
+        CourseEntity activatedCourse = courseService.activateCourse(id);
+        return ResponseEntity.status(HttpStatus.OK).body(activatedCourse);
+    }
+
 }

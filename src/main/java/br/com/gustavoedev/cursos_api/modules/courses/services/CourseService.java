@@ -3,6 +3,7 @@ package br.com.gustavoedev.cursos_api.modules.courses.services;
 import br.com.gustavoedev.cursos_api.modules.courses.CourseRepository;
 import br.com.gustavoedev.cursos_api.modules.courses.dto.CourseCreateDTO;
 import br.com.gustavoedev.cursos_api.modules.courses.dto.CourseUpdateDTO;
+import br.com.gustavoedev.cursos_api.modules.courses.entities.CourseActiveENUM;
 import br.com.gustavoedev.cursos_api.modules.courses.entities.CourseEntity;
 import org.springframework.stereotype.Service;
 
@@ -56,6 +57,20 @@ public class CourseService {
         CourseEntity course = courseRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Curso não encontrado!"));
         courseRepository.delete(course);
+    }
+
+    public CourseEntity activateCourse(UUID id) {
+        CourseEntity course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado!"));
+
+        CourseActiveENUM currentStatus = course.getStatus();
+        if (currentStatus == CourseActiveENUM.ACTIVE) {
+            course.setStatus(CourseActiveENUM.INACTIVE);
+        } else {
+            course.setStatus(CourseActiveENUM.ACTIVE);
+        }
+
+        return courseRepository.save(course);
     }
 
 
