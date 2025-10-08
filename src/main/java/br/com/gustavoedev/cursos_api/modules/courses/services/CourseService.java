@@ -5,6 +5,7 @@ import br.com.gustavoedev.cursos_api.modules.courses.dto.CourseCreateDTO;
 import br.com.gustavoedev.cursos_api.modules.courses.dto.CourseUpdateDTO;
 import br.com.gustavoedev.cursos_api.modules.courses.entities.CourseActiveENUM;
 import br.com.gustavoedev.cursos_api.modules.courses.entities.CourseEntity;
+import br.com.gustavoedev.cursos_api.modules.courses.exceptions.CourseNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class CourseService {
 
     public CourseEntity updateCourse(UUID id, CourseUpdateDTO courseDTO) {
         CourseEntity course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado!"));
+                .orElseThrow(() -> new CourseNotFoundException("Curso não encontrado!"));
 
         if (courseDTO.getName() != null) {
             course.setName(courseDTO.getName());
@@ -55,13 +56,13 @@ public class CourseService {
 
     public void deleteCourse(UUID id) {
         CourseEntity course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado!"));
+                .orElseThrow(() -> new CourseNotFoundException("Curso não encontrado!"));
         courseRepository.delete(course);
     }
 
     public CourseEntity activateCourse(UUID id) {
         CourseEntity course = courseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Curso não encontrado!"));
+                .orElseThrow(() -> new CourseNotFoundException("Curso não encontrado!"));
 
         CourseActiveENUM currentStatus = course.getStatus();
         if (currentStatus == CourseActiveENUM.ACTIVE) {
