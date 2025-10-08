@@ -3,8 +3,9 @@ package br.com.gustavoedev.cursos_api.modules.courses.services;
 import br.com.gustavoedev.cursos_api.modules.courses.CourseRepository;
 import br.com.gustavoedev.cursos_api.modules.courses.dto.CourseCreateDTO;
 import br.com.gustavoedev.cursos_api.modules.courses.entities.CourseEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -22,5 +23,17 @@ public class CourseService {
 
         return courseRepository.save(course);
     }
+
+    public List<CourseEntity> getAllCourses(String name, String category) {
+        if (name != null && category != null) {
+            return courseRepository.findByNameAndCategoryIgnoreCase(name, category);
+        } else if (name != null) {
+            return courseRepository.findByNameIgnoreCase(name);
+        } else if (category != null) {
+            return courseRepository.findByCategoryIgnoreCase(category);
+        }
+        return courseRepository.findAll();
+    }
+
 
 }
