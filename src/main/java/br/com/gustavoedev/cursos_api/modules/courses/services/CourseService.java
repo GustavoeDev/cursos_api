@@ -2,10 +2,12 @@ package br.com.gustavoedev.cursos_api.modules.courses.services;
 
 import br.com.gustavoedev.cursos_api.modules.courses.CourseRepository;
 import br.com.gustavoedev.cursos_api.modules.courses.dto.CourseCreateDTO;
+import br.com.gustavoedev.cursos_api.modules.courses.dto.CourseUpdateDTO;
 import br.com.gustavoedev.cursos_api.modules.courses.entities.CourseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CourseService {
@@ -33,6 +35,21 @@ public class CourseService {
             return courseRepository.findByCategoryIgnoreCase(category);
         }
         return courseRepository.findAll();
+    }
+
+    public CourseEntity updateCourse(UUID id, CourseUpdateDTO courseDTO) {
+        CourseEntity course = courseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Curso não encontrado!"));
+
+        if (courseDTO.getName() != null) {
+            course.setName(courseDTO.getName());
+        }
+
+        if (courseDTO.getCategory() != null) {
+            course.setCategory(courseDTO.getCategory());
+        }
+
+        return courseRepository.save(course);
     }
 
 
